@@ -5,6 +5,12 @@ app = Flask(__name__)
 DEBUG_FILE = './debug.txt'
 
 
+@app.route('/test', methods=['GET'])
+def test():
+    data = {"message": "this is test route"}
+    return data
+
+
 @app.route('/', methods=['POST'])
 def hear():
     input_data = request.data
