@@ -9,19 +9,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import Flask, request
 
+from crons.notify import notify_time
 from utils.hear import bot
 from utils.tools import debug, push
 
 app = Flask(__name__)
 load_dotenv()
-
-
-def notify_time():
-    jp_tz = pytz.timezone('Asia/Tokyo')
-    time_info = '時報です。 ' + datetime.datetime.now(jp_tz).strftime('%Y-%m-%d %H:%M:%S')
-    print(time_info)
-    to = os.environ.get('USER_ID')
-    push(to, time_info)
 
 
 @app.route('/test', methods=['GET'])
