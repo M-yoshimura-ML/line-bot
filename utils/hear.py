@@ -2,4 +2,7 @@ from utils.tools import reply
 
 
 def bot(event):
-    reply(event, 'hello')
+    # hello bot
+    # reply(event, 'hello')
+    # echo bot
+    reply(event, event['message']['text'])
