@@ -1,13 +1,14 @@
+import json
 import os
 
 from dotenv import load_dotenv
 from flask import Flask, request
 
+from utils.hear import bot
+from utils.tools import debug
+
 app = Flask(__name__)
 load_dotenv()
-
-
-DEBUG_FILE = os.environ.get('DEBUG_FILE', '/tmp/debug.txt')
 
 
 @app.route('/test', methods=['GET'])
@@ -17,16 +18,15 @@ def test():
 
 
 @app.route('/', methods=['POST'])
-def hear():
-    input_data = request.data
-    print(input_data)
-    print(f"DEBUG_FILE path: {DEBUG_FILE}")
+def main():
+    input_data = request.data.decode('utf-8')
+    debug('input', input_data)
 
-    # make sure the directory and create if necessary
-    os.makedirs(os.path.dirname(DEBUG_FILE), exist_ok=True)
+    if input_data:
+        events = json.loads(input_data).get('events', [])
+        for event in events:
+            bot(event)
 
-    with open(DEBUG_FILE, 'wb') as f:
-        f.write(input_data)
     return 'Data received', 200
 
 
