@@ -43,3 +43,12 @@ def reply(event, text):
         'messages': [{'type': 'text', 'text': text}]
     }
     post('reply', obj)
+
+
+def push(to, text):
+    obj = {
+        'to': to,
+        'messages': [{'type': 'text', 'text': text}]
+    }
+
+    post('push', obj)
