@@ -9,12 +9,13 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import Flask, request
 
-from crons.notify import notify_time
+from crons.notify import notify_time, notify_bp
 from utils.hear import bot
 from utils.tools import debug, push
 
 app = Flask(__name__)
 load_dotenv()
+app.register_blueprint(notify_bp)
 
 
 @app.route('/test', methods=['GET'])
@@ -37,14 +38,14 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig()
-    logging.getLogger('apscheduler').setLevel(logging.DEBUG)
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=notify_time, trigger="interval", minutes=5)
+    # logging.basicConfig()
+    # logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+    # scheduler = BackgroundScheduler()
+    # scheduler.add_job(func=notify_time, trigger="interval", minutes=5)
     # scheduler.add_job(func=notify_time, trigger="interval", hours=1)
     # scheduler.add_job(func=notify_time, trigger="interval", days=1)
-    scheduler.start()
+    # scheduler.start()
     # Shutdown the scheduler when exiting the app
-    atexit.register(lambda: scheduler.shutdown())
+    # atexit.register(lambda: scheduler.shutdown())
 
     app.run(debug=False)

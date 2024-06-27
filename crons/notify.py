@@ -3,8 +3,12 @@ import os
 import datetime
 
 import pytz
+from flask import Blueprint
 
 from utils.tools import push
+
+
+notify_bp = Blueprint('notify', __name__)
 
 
 def notify_time():
@@ -15,7 +19,8 @@ def notify_time():
     push(to, time_info)
 
 
-def handler(request):
+@notify_bp.route('/crons/notify', methods=['GET'])
+def handler():
     notify_time()
     return {
         "statusCode": 200,
