@@ -19,8 +19,8 @@ def bot(event):
                     reply(event, message['text'])
                 elif message['pattern'] == 'weather_forecast':
                     handle_text_message(event)
-                else:
-                    reply(event, msg)
+        else:
+            reply(event, msg)
 
     elif message_type == 'location':
         handle_location_message(event)
