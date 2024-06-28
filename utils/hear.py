@@ -1,6 +1,6 @@
 import re
 
-from bots.weather_forecast import handle_message_event
+from bots.weather_forecast import handle_location_message, handle_text_message
 from utils.tools import reply
 
 
@@ -8,17 +8,22 @@ def bot(event):
     # hello bot
     # reply(event, 'hello')
 
-    # echo bot
-    # reply(event, event['message']['text'])
-
     # identify keyword bot
-    messages = check_message(event['message']['text'])
-    if len(messages) > 0:
-        for message in messages:
-            if message['pattern'] == 'greeting':
-                reply(event, message['text'])
-            elif message['pattern'] == 'weather_forecast':
-                handle_message_event(event)
+    message_type = event['message']['type']
+    if message_type == 'text':
+        msg = event['message']['text']
+        messages = check_message(msg)
+        if len(messages) > 0:
+            for message in messages:
+                if message['pattern'] == 'greeting':
+                    reply(event, message['text'])
+                elif message['pattern'] == 'weather_forecast':
+                    handle_text_message(event)
+                else:
+                    reply(event, msg)
+
+    elif message_type == 'location':
+        handle_location_message(event)
 
 
 def check_message(message):
