@@ -19,12 +19,15 @@ jp_locations = [
 
 def handle_text_message(event):
     text = event['message']['text']
-    # if text.lower() == '位置情報を送信':
-    #     reply_text = "現在位置情報を送信してください。"
-    #     reply(event, reply_text)
+    is_matched = False
     for pattern in jp_locations:
         if re.search(pattern['ja'], text):
             handle_text_location_message(event, text)
+            is_matched = True
+            break
+
+    if not is_matched:
+        reply(event, '現在位置情報を送信してください。')
 
 
 def get_weather_by_text(text):
