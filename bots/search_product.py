@@ -1,7 +1,10 @@
 import os
+import re
 
 import requests
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, render_template
+
+from utils.tools import reply
 
 search_product_bp = Blueprint('search_product_bp', __name__)
 
@@ -46,14 +49,14 @@ def search(page=1):
                            keyword=keyword, results=results, page=page, page_count=page_count)
 
 
-@search_product_bp.route('/search-items', methods=['POST'])
-def search_items():
-    keyword = request.form['keyword']
+def search_items(keyword=''):
     url = os.environ.get('RAKUTEN_APP_API_URL')
     params = {
         'format': 'json',
         'keyword': keyword,
-        'applicationId': os.environ.get('RAKUTEN_APP_ID')
+        'applicationId': os.environ.get('RAKUTEN_APP_ID'),
+        'elements': "itemName,itemPrice,itemUrl,mediumImageUrls,hits",
+        'hits': 5
     }
     response = requests.get(url, params=params)
     data = response.json()
@@ -65,8 +68,28 @@ def search_items():
         results.append({
             'name': item_info['itemName'],
             'price': item_info['itemPrice'],
-            'shop': item_info['shopName'],
-            'url': item_info['itemUrl']
+            'url': item_info['itemUrl'],
+            'images': item_info['mediumImageUrls']
         })
 
-    return jsonify(results)
+    return results
+
+
+def text_product_search(event):
+    text = event['message']['text']
+    # need Regex check
+    keyword = re.sub(r"価格|price", "", text, flags=re.IGNORECASE).strip()
+
+    if keyword:
+        results = search_items(keyword)
+        result_text = ""
+
+        for item in results:
+            result_text += f"商品名: {item['name']}\n"
+            result_text += f"価格: {item['price']}円\n"
+            result_text += f"URL: {item['url']}\n"
+            result_text += "\n"  # line break per item
+
+        reply(event, result_text)
+    else:
+        reply(event, '商品を検索するには、以下のようにメッセージを送ってください。\n ex)XXXXXX 価格')

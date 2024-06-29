@@ -1,5 +1,6 @@
 import re
 
+from bots.search_product import text_product_search
 from bots.weather_forecast import handle_location_message, handle_text_message
 from utils.tools import reply
 
@@ -19,6 +20,8 @@ def bot(event):
                     reply(event, message['text'])
                 elif message['pattern'] == 'weather_forecast':
                     handle_text_message(event)
+                elif message['pattern'] == 'product_search':
+                    text_product_search(event)
         else:
             reply(event, msg)
 
@@ -41,5 +44,10 @@ def check_message(message):
     for pattern in pattern_weather_forecast:
         if re.search(pattern, message):
             messages.append({'pattern': 'weather_forecast', 'text': message})
+
+    pattern_product_search = [r"価格", r"price"]
+    for pattern in pattern_product_search:
+        if re.search(pattern, message):
+            messages.append({'pattern': 'product_search', 'text': message})
 
     return messages
