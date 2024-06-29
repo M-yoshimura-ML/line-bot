@@ -9,6 +9,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import Flask, request
 
+from bots.search_product import search_product_bp
 from crons.notify import notify_time, notify_bp
 from utils.hear import bot
 from utils.tools import debug, push
@@ -16,6 +17,7 @@ from utils.tools import debug, push
 app = Flask(__name__)
 load_dotenv()
 app.register_blueprint(notify_bp)
+app.register_blueprint(search_product_bp)
 
 
 @app.route('/test', methods=['GET'])
