@@ -1,8 +1,9 @@
 import re
 
+from bots.search_image import keyword_image_search
 from bots.search_product import text_product_search
 from bots.weather_forecast import handle_location_message, handle_text_message
-from utils.tools import reply, reply_image
+from utils.tools import reply
 
 
 def bot(event):
@@ -23,9 +24,7 @@ def bot(event):
                 elif message['pattern'] == 'product_search':
                     text_product_search(event)
                 elif message['pattern'] == 'image_search':
-                    original = 'https://thumbnail.image.rakuten.co.jp/@0_mall/sevenheavenstore/cabinet/09673830/imgrc0089194103.jpg?_ex=128x128'
-                    preview = 'https://thumbnail.image.rakuten.co.jp/@0_mall/sevenheavenstore/cabinet/09673830/imgrc0090744168.jpg?_ex=128x128'
-                    reply_image(event, original, preview)
+                    keyword_image_search(event)
         else:
             reply(event, msg)
 
