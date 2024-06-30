@@ -52,3 +52,15 @@ def push(to, text):
     }
 
     post('push', obj)
+
+
+def reply_image(event, original, preview):
+    obj = {
+        'replyToken': event['replyToken'],
+        'messages': [{
+            'type': 'image',
+            'originalContentUrl': original,
+            'previewImageUrl': preview
+        }]
+    }
+    post('reply', obj)
