@@ -2,6 +2,7 @@ import re
 
 from bots.search_image import keyword_image_search
 from bots.search_product import text_product_search
+from bots.search_restaurant import text_restaurant_search
 from bots.weather_forecast import handle_location_message, handle_text_message
 from utils.tools import reply
 
@@ -25,6 +26,8 @@ def bot(event):
                     text_product_search(event)
                 elif message['pattern'] == 'image_search':
                     keyword_image_search(event)
+                elif message['pattern'] == 'restaurant_search':
+                    text_restaurant_search(event)
         else:
             reply(event, msg)
 
@@ -57,5 +60,10 @@ def check_message(message):
     for pattern in pattern_image_search:
         if re.search(pattern, message):
             messages.append({'pattern': 'image_search', 'text': message})
+
+    pattern_restaurant_search = [r"レストラン", r"restaurant"]
+    for pattern in pattern_restaurant_search:
+        if re.search(pattern, message):
+            messages.append({'pattern': 'restaurant_search', 'text': message})
 
     return messages
