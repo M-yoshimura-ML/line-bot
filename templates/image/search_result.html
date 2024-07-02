@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Image Search{% endblock %}
+{% block content %}
+    <h1>Image Search</h1>
+    <p>You can search images from Google Custom Search.</p>
+    <form action="/image/search" method="post">
+        <input type="text" name="keyword" placeholder="キーワードを入力" value="{{ keyword }}">
+        <input type="submit" value="検索">
+    </form>
+
+    {% if results %}
+        <div class="mt-3 mb-3">
+            <p>You searched with: <em>{{ keyword }}</em> </p>
+        </div>
+        {% for result in results %}
+            <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+                <h4>Image title: {{ result['title'] }}</h4>
+                <div>URL: <a href="{{ result.preview }}" target="_blank">{{ result.preview }}</a></div><br>
+                {% if result['original'] %}
+                    <img src="{{ result['original'] }}" width="300" height="200" />
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        {% if  keyword != '' %}
+            <p>sorry, your search condition: <em>{{ keyword }}</em> was not found.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
