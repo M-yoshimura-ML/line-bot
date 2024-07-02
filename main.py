@@ -7,10 +7,11 @@ import os
 import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 from bots.search_image import search_image_bp
 from bots.search_product import search_product_bp
+from bots.search_restaurant import search_restaurant_bp
 from crons.notify import notify_time, notify_bp
 from utils.hear import bot
 from utils.tools import debug, push
@@ -20,12 +21,18 @@ load_dotenv()
 app.register_blueprint(notify_bp)
 app.register_blueprint(search_product_bp)
 app.register_blueprint(search_image_bp, url_prefix='/image')
+app.register_blueprint(search_restaurant_bp, url_prefix='/restaurant')
 
 
 @app.route('/test', methods=['GET'])
 def test():
     data = {"message": "this is test route"}
     return data
+
+
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    return render_template('dashboard.html')
 
 
 @app.route('/', methods=['POST'])
