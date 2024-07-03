@@ -3,6 +3,7 @@ import re
 from bots.search_image import keyword_image_search
 from bots.search_product import text_product_search
 from bots.search_restaurant import text_restaurant_search
+from bots.show_menu import reply_text_menu
 from bots.weather_forecast import handle_location_message, handle_text_message
 from utils.tools import reply
 
@@ -20,6 +21,8 @@ def bot(event):
             for message in messages:
                 if message['pattern'] == 'greeting':
                     reply(event, message['text'])
+                elif message['pattern'] == 'menu':
+                    reply_text_menu(event)
                 elif message['pattern'] == 'weather_forecast':
                     handle_text_message(event)
                 elif message['pattern'] == 'product_search':
@@ -45,6 +48,11 @@ def check_message(message):
         if re.search(pattern, message):
             print("pattern matched")
             messages.append({'pattern': 'greeting', 'text': 'Good morning!'})
+
+    pattern_menu = [r"メニュー", r"menu"]
+    for pattern in pattern_menu:
+        if re.search(pattern, message):
+            messages.append({'pattern': 'menu', 'text': message})
 
     pattern_weather_forecast = [r"天気", r"weather"]
     for pattern in pattern_weather_forecast:
