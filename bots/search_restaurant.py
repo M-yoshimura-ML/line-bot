@@ -117,6 +117,8 @@ def extract_keyword_address(text):
     # Define a regex pattern to capture keyword and address
     text = re.sub(r"\n", "", text)
     text = re.sub(r"\t", "", text)
+    text = re.sub(r"　", "", text)
+    text = re.sub(r" ", "", text)
     pattern = re.compile(r"(.+?) 住所 (.+)")
     pattern2 = re.compile(r"(.+?) address (.+)")
     match = pattern.match(text)
