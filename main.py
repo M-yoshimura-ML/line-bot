@@ -9,6 +9,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
 
+from bots.memo import memo_bp
 from bots.search_image import search_image_bp
 from bots.search_product import search_product_bp
 from bots.search_restaurant import search_restaurant_bp
@@ -22,6 +23,7 @@ app.register_blueprint(notify_bp)
 app.register_blueprint(search_product_bp)
 app.register_blueprint(search_image_bp, url_prefix='/image')
 app.register_blueprint(search_restaurant_bp, url_prefix='/restaurant')
+app.register_blueprint(memo_bp)
 
 
 @app.route('/test', methods=['GET'])
