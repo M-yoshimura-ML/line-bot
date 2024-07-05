@@ -37,6 +37,11 @@ def dashboard():
     return render_template('dashboard.html')
 
 
+@app.route('/speech-to-text', methods=['GET'])
+def speech_to_text():
+    return render_template('speech_to_text.html')
+
+
 @app.route('/', methods=['POST'])
 def main():
     input_data = request.data.decode('utf-8')
