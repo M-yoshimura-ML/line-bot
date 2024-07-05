@@ -1,5 +1,6 @@
 import re
 
+from bots.memo import handle_memo
 from bots.search_image import keyword_image_search
 from bots.search_product import text_product_search
 from bots.search_restaurant import text_restaurant_search
@@ -32,7 +33,7 @@ def bot(event):
                 elif message['pattern'] == 'restaurant_search':
                     text_restaurant_search(event)
                 elif message['pattern'] == 'memo':
-                    pass
+                    handle_memo(event, message['words'])
         else:
             reply(event, msg)
 
