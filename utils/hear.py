@@ -31,6 +31,8 @@ def bot(event):
                     keyword_image_search(event)
                 elif message['pattern'] == 'restaurant_search':
                     text_restaurant_search(event)
+                elif message['pattern'] == 'memo':
+                    pass
         else:
             reply(event, msg)
 
@@ -73,5 +75,11 @@ def check_message(message):
     for pattern in pattern_restaurant_search:
         if re.search(pattern, message):
             messages.append({'pattern': 'restaurant_search', 'text': message})
+
+    pattern_memo = [r"追加", r"買う", r"削除", r"買った", r"リスト表示", r"リストクリア",
+                    r"add", r"buy", r"remove", r"bought", r"show list", r"clear list"]
+    for pattern in pattern_memo:
+        if re.search(pattern, message):
+            messages.append({'pattern': 'memo', 'text': message, 'words': pattern})
 
     return messages
